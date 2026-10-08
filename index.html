@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Tiếng Trung Cơ Bản</title>
+    <title>Học Tiếng Trung Giao Tiếp Thương Mại</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -55,12 +55,12 @@
 
     <!-- Footer -->
     <footer class="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-400">
-        <p>© 2026 Ứng dụng Học Tiếng Trung. Phát triển phục vụ học tập.</p>
+        <p>© 2026 Ứng dụng Học Tiếng Trung. Phát triển phục vụ công việc và học tập.</p>
     </footer>
 
     <!-- JavaScript Xử lý ứng dụng -->
     <script>
-        // --- CẤU HÌNH ÂM THANH GIỐNG NGƯỜI THẬT ---
+        // --- CẤU HÌNH ÂM THANH GIỐNG NGƯỜI THẬT, TỐC ĐỘ VỪA PHẢI ---
         function speakText(text) {
             if (!window.speechSynthesis) {
                 alert('Trình duyệt của bạn không hỗ trợ tính năng phát âm.');
@@ -71,14 +71,14 @@
             window.speechSynthesis.cancel();
 
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'zh-CN'; // Đặt ngôn ngữ là tiếng Trung Quốc
+            utterance.lang = 'zh-CN'; // Ngôn ngữ tiếng Trung Quốc
             utterance.rate = 0.85;    // Tốc độ đọc chậm vừa phải, chuẩn xác từng nét
             utterance.pitch = 1.0;    // Độ cao giọng tự nhiên
 
             // Lấy danh sách giọng đọc có sẵn trên thiết bị
             const voices = window.speechSynthesis.getVoices();
             
-            // Ưu tiên chọn giọng đọc chuẩn Trung Quốc đại lục (zh-CN) chất lượng cao
+            // Ưu tiên chọn giọng đọc chuẩn Trung Quốc đại lục chất lượng cao nếu có
             const preferredVoice = voices.find(v => v.lang === 'zh-CN' && (v.name.includes('Natural') || v.name.includes('Enhanced') || v.name.includes('Google') || v.name.includes('Hui') || v.name.includes('Kangkang')));
             
             if (preferredVoice) {
@@ -100,7 +100,7 @@
             };
         }
 
-        // --- QUẢN LÝ DỮ LIỆU & BÀI HỌC ---
+        // --- QUẢN LÝ DỮ LIỆU & BÀI HỌC ĐẦY ĐỦ ---
         const LessonsManager = {
             getAllLessons: function() {
                 let custom = JSON.parse(localStorage.getItem('custom_lessons') || '[]');
@@ -108,12 +108,21 @@
                     custom = [
                         {
                             id: 1,
-                            title: "Bài 1: Giao tiếp cơ bản",
-                            desc: "Chào hỏi và làm quen",
+                            title: "Bài 1: Giao tiếp văn phòng & Chào hỏi",
+                            desc: "Từ vựng cơ bản chào hỏi và làm quen",
                             words: [
                                 { id: 101, chinese: "你好", pinyin: "nǐ hǎo", vietnamese: "Xin chào", example: "你好，很高兴认识你。", examplePinyin: "Nǐ hǎo, hěn gāoxìng rènshí nǐ.", exampleVietnamese: "Xin chào, rất vui được gặp bạn." },
-                                { id: 102, chinese: "谢谢", pinyin: "xièxie", vietnamese: "Cảm ơn", example: "谢谢你的 帮助。", examplePinyin: "Xièxie nǐ de bāngzhù.", exampleVietnamese: "Cảm ơn sự giúp đỡ của bạn." },
+                                { id: 102, chinese: "谢谢", pinyin: "xièxie", vietnamese: "Cảm ơn", example: "谢谢你的帮助。", examplePinyin: "Xièxie nǐ de bāngzhù.", exampleVietnamese: "Cảm ơn sự giúp đỡ của bạn." },
                                 { id: 103, chinese: "再见", pinyin: "zàijiàn", vietnamese: "Tạm biệt", example: "明天见，再见！", examplePinyin: "Míngtiān jiàn, zàijiàn!", exampleVietnamese: "Hẹn gặp lại ngày mai, tạm biệt!" }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            title: "Bài 2: Quản lý & Thương mại",
+                            desc: "Thuật ngữ chuyên ngành, kiểm tra chất lượng",
+                            words: [
+                                { id: 201, chinese: "质检", pinyin: "zhìjiǎn", vietnamese: "Kiểm tra chất lượng", example: "请把产品拿去质检。", examplePinyin: "Qǐng bǎ chǎnpǐn ná qù zhìjiǎn.", exampleVietnamese: "Xin hãy mang sản phẩm đi kiểm tra chất lượng." },
+                                { id: 202, chinese: "合同", pinyin: "hétóng", vietnamese: "Hợp đồng", example: "我们明天 签合同。", examplePinyin: "Wǒmen míngtiān qiān hétóng.", exampleVietnamese: "Chúng ta ngày mai ký hợp đồng." }
                             ]
                         }
                     ];
@@ -198,18 +207,28 @@
             }
         }
 
-        // --- CÁC GIAO DIỆN (TEMPLATES) ---
+        // --- GIAO DIỆN CHI TIẾT ---
         function renderHomeScreen(lessonsData) {
             return `
                 <div class="space-y-8 py-6">
                     <div class="text-center space-y-3">
                         <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Học Từ Vựng Tiếng Trung</h1>
-                        <p class="text-slate-500 max-w-lg mx-auto text-sm">Nâng cao khả năng phát âm, ghi nhớ từ vựng thông minh với flashcard và bài kiểm tra trực quan.</p>
+                        <p class="text-slate-500 max-w-lg mx-auto text-sm">Nâng cao khả năng phát âm chuẩn xác, ghi nhớ từ vựng thông minh với flashcard và bài kiểm tra trực quan.</p>
                         <div class="pt-2 flex justify-center gap-3">
                             <button onclick="router.navigate('lessons')" class="px-6 py-3 rounded-2xl bg-brand-red text-white font-bold text-sm shadow-lg hover:bg-red-700 transition">Bắt đầu học ngay</button>
                             <button onclick="router.navigate('addWord')" class="px-6 py-3 rounded-2xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">Thêm từ vựng</button>
                         </div>
                     </div>
+                    
+                    <!-- Ô tìm kiếm nhanh -->
+                    <div class="max-w-xl mx-auto">
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-slate-400"></i>
+                            <input type="text" oninput="handleGlobalSearch(this.value)" placeholder="Tìm kiếm nhanh từ vựng, pinyin, nghĩa..." class="w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-red shadow-sm">
+                        </div>
+                        <div id="searchResults" class="mt-2 grid grid-cols-1 gap-2"></div>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                         <div onclick="router.navigate('lessons')" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-red transition space-y-2">
                             <div class="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-950 text-brand-red flex items-center justify-center font-bold"><i data-lucide="book-open"></i></div>
@@ -241,7 +260,7 @@
                             <div onclick="router.navigate('study', ${l.id})" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-red transition flex items-center justify-between">
                                 <div>
                                     <h3 class="font-bold text-base">${l.title}</h3>
-                                    <p class="text-xs text-slate-500 mt-0.5">${l.desc} •${l.words.length} từ vựng</p>
+                                    <p class="text-xs text-slate-500 mt-0.5">${l.desc} • ${l.words.length} từ vựng</p>
                                 </div>
                                 <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800">Học ngay →</span>
                             </div>
@@ -292,260 +311,4 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nghĩa ví dụ:</label>
-                                    <input type="text" id="newExampleVietnamese" placeholder="VD: Xin hãy mang..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
-                                </div>
-                            </div>
-                            <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-red hover:bg-red-700 text-white font-bold shadow-lg transition">Lưu từ vựng</button>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        function handleAddNewWord(e) {
-            e.preventDefault();
-            const lessonId = document.getElementById('newWordLessonId').value;
-            const newWord = {
-                chinese: document.getElementById('newChinese').value,
-                pinyin: document.getElementById('newPinyin').value,
-                vietnamese: document.getElementById('newVietnamese').value,
-                example: document.getElementById('newExample').value,
-                examplePinyin: document.getElementById('newExamplePinyin').value,
-                exampleVietnamese: document.getElementById('newExampleVietnamese').value
-            };
-            if (LessonsManager.addWordToLesson(lessonId, newWord)) {
-                alert('Thêm từ vựng thành công!');
-                router.navigate('study', lessonId);
-            }
-        }
-
-        function renderDashboard(lessonsData) {
-            const prog = Store.getProgress();
-            let totalWords = lessonsData.reduce((acc, l) => acc + l.words.length, 0);
-            let learnedCount = prog.learnedWords.length;
-            let percent = Math.round((learnedCount / totalWords) * 100) || 0;
-
-            return `
-                <div class="max-w-4xl mx-auto space-y-6">
-                    <button onclick="router.navigate('home')" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center space-x-1">
-                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                        <span>Quay lại trang chủ</span>
-                    </button>
-                    <h1 class="text-2xl font-extrabold">📊 Tiến độ học tập cá nhân</h1>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-                            <span class="text-xs font-bold text-slate-400 uppercase">Tổng từ đã học</span>
-                            <p class="text-3xl font-extrabold text-brand-red mt-2">${learnedCount} <span class="text-sm text-slate-400 font-normal">/ ${totalWords}</span></p>
-                        </div>
-                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-                            <span class="text-xs font-bold text-slate-400 uppercase">Bài hoàn thành</span>
-                            <p class="text-3xl font-extrabold text-brand-gold mt-2">${prog.completedLessons.length} <span class="text-sm text-slate-400 font-normal">/ ${lessonsData.length}</span></p>
-                        </div>
-                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-                            <span class="text-xs font-bold text-slate-400 uppercase">Tỷ lệ hoàn thành</span>
-                            <p class="text-3xl font-extrabold text-emerald-500 mt-2">${percent}%</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderStudyScreen(lessonId, lessonsData) {
-            const lesson = lessonsData.find(l => l.id == lessonId) || lessonsData[0];
-            return `
-                <div class="max-w-3xl mx-auto space-y-6">
-                    <div class="flex items-center justify-between">
-                        <button onclick="router.navigate('lessons')" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center space-x-1">
-                            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                            <span>Danh sách bài học</span>
-                        </button>
-                        <span class="text-xs font-bold px-3 py-1 rounded-full bg-red-50 dark:bg-red-950 text-brand-red">Bài ${lesson.id}</span>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-extrabold">${lesson.title}</h1>
-                        <p class="text-xs text-slate-500 mt-1">${lesson.desc}</p>
-                    </div>
-
-                    <div id="flashcardContainer" class="perspective-1000 w-full h-96 cursor-pointer" onclick="flipCard()">
-                        <div id="cardInner" class="relative w-full h-full duration-500 transform-style-3d shadow-xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                            <!-- MẶT TRƯỚC -->
-                            <div class="absolute inset-0 backface-hidden flex flex-col items-center justify-center p-8 text-center space-y-4">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Từ vựng <span id="currentIndexDisplay">1</span> / ${lesson.words.length}</span>
-                                <h2 id="cardChinese" class="text-5xl font-extrabold text-brand-red">--</h2>
-                                <p id="cardPinyin" class="text-lg font-medium text-slate-500">--</p>
-                                <button onclick="event.stopPropagation(); speakText(currentWordObj.chinese)" class="p-3 rounded-full bg-red-50 dark:bg-red-950 text-brand-red hover:bg-red-100 transition">
-                                    <i data-lucide="volume-2" class="w-5 h-5"></i>
-                                </button>
-                                <span class="text-xs text-slate-400 italic">Nhấp vào thẻ để lật xem nghĩa</span>
-                            </div>
-                            <!-- MẶT SAU -->
-                            <div class="absolute inset-0 backface-hidden rotate-y-180 flex flex-col justify-between p-8 bg-slate-900 text-white rounded-3xl">
-                                <div class="space-y-2 text-center">
-                                    <h3 id="cardMeaning" class="text-2xl font-bold text-brand-gold">--</h3>
-                                </div>
-                                <div class="bg-white/10 p-4 rounded-2xl space-y-1 text-sm">
-                                    <p id="cardExample" class="font-semibold">--</p>
-                                    <p id="cardExamplePinyin" class="text-xs text-slate-300">--</p>
-                                    <p id="cardExampleVietnamese" class="text-xs text-brand-gold italic">--</p>
-                                </div>
-                                <div class="text-center">
-                                    <span class="text-xs text-slate-400">Nhấp để quay lại</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center pt-2">
-                        <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">← Từ trước</button>
-                        <button onclick="router.navigate('quiz', ${lesson.id})" class="px-6 py-2.5 rounded-xl bg-brand-gold hover:bg-amber-600 text-slate-900 font-bold text-sm shadow-md transition">Làm bài kiểm tra →</button>
-                        <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">Từ tiếp →</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        let currentCardIndex = 0;
-        let currentWordObj = null;
-        let isFlipped = false;
-
-        function initFlashcardLogic(lessonsData) {
-            const lesson = lessonsData.find(l => l.id == router.param) || lessonsData[0];
-            currentCardIndex = 0;
-            updateCardContent(lesson);
-        }
-
-        function updateCardContent(lesson) {
-            if (!lesson.words || lesson.words.length === 0) return;
-            currentWordObj = lesson.words[currentCardIndex];
-            Store.markWordLearned(currentWordObj.id);
-
-            document.getElementById('currentIndexDisplay').innerText = currentCardIndex + 1;
-            document.getElementById('cardChinese').innerText = currentWordObj.chinese;
-            document.getElementById('cardPinyin').innerText = currentWordObj.pinyin;
-            document.getElementById('cardMeaning').innerText = currentWordObj.vietnamese;
-            document.getElementById('cardExample').innerText = currentWordObj.example || '';
-            document.getElementById('cardExamplePinyin').innerText = currentWordObj.examplePinyin || '';
-            document.getElementById('cardExampleVietnamese').innerText = currentWordObj.exampleVietnamese || '';
-
-            if (isFlipped) flipCard();
-        }
-
-        function flipCard() {
-            const inner = document.getElementById('cardInner');
-            isFlipped = !isFlipped;
-            if (isFlipped) {
-                inner.style.transform = 'rotateY(180deg)';
-            } else {
-                inner.style.transform = 'rotateY(0deg)';
-            }
-        }
-
-        function nextCard() {
-            const lessonsData = LessonsManager.getAllLessons();
-            const lesson = lessonsData.find(l => l.id == router.param) || lessonsData[0];
-            if (currentCardIndex < lesson.words.length - 1) {
-                currentCardIndex++;
-                updateCardContent(lesson);
-            }
-        }
-
-        function prevCard() {
-            const lessonsData = LessonsManager.getAllLessons();
-            const lesson = lessonsData.find(l => l.id == router.param) || lessonsData[0];
-            if (currentCardIndex > 0) {
-                currentCardIndex--;
-                updateCardContent(lesson);
-            }
-        }
-
-        function renderQuizScreen(lessonId, lessonsData) {
-            return `
-                <div class="max-w-2xl mx-auto space-y-6">
-                    <button onclick="router.navigate('study', ${lessonId})" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center space-x-1">
-                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                        <span>Quay lại Flashcard</span>
-                    </button>
-                    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs font-bold text-brand-red uppercase">Kiểm tra từ vựng</span>
-                            <span id="quizProgressCount" class="text-xs font-bold text-slate-400">Câu 1 / 5</span>
-                        </div>
-                        <div class="text-center space-y-2 py-4">
-                            <h2 id="quizQuestionWord" class="text-4xl font-extrabold text-brand-red">--</h2>
-                            <p class="text-xs text-slate-400">Chọn nghĩa tiếng Việt chính xác nhất:</p>
-                        </div>
-                        <div id="quizOptionsContainer" class="space-y-3"></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        let quizQuestions = [];
-        let quizCurrentIdx = 0;
-        let quizScore = 0;
-
-        function initQuizLogic(lessonId, lessonsData) {
-            const lesson = lessonsData.find(l => l.id == lessonId) || lessonsData[0];
-            quizQuestions = [...lesson.words].sort(() => 0.5 - Math.random()).slice(0, 5);
-            quizCurrentIdx = 0;
-            quizScore = 0;
-            loadQuizQuestion(lessonsData);
-        }
-
-        function loadQuizQuestion(lessonsData) {
-            if (quizCurrentIdx >= quizQuestions.length) {
-                Store.markLessonCompleted(router.param);
-                router.navigate('complete', { lessonId: router.param, score: quizScore, total: quizQuestions.length });
-                return;
-            }
-
-            document.getElementById('quizProgressCount').innerText = `Câu ${quizCurrentIdx + 1} / ${quizQuestions.length}`;
-            let currentQ = quizQuestions[quizCurrentIdx];
-            document.getElementById('quizQuestionWord').innerText = currentQ.chinese;
-
-            let allWords = lessonsData.flatMap(l => l.words);
-            let distractors = allWords.filter(w => w.id !== currentQ.id).sort(() => 0.5 - Math.random()).slice(0, 3);
-            let options = [...distractors, currentQ].sort(() => 0.5 - Math.random());
-
-            let container = document.getElementById('quizOptionsContainer');
-            container.innerHTML = options.map(opt => `
-                <button onclick="handleQuizAnswer('${opt.vietnamese}', '${currentQ.vietnamese}')" class="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-950 font-semibold text-sm transition text-left border border-slate-200 dark:border-slate-700">
-                    ${opt.vietnamese}
-                </button>
-            `).join('');
-        }
-
-        function handleQuizAnswer(selected, correct) {
-            if (selected === correct) {
-                quizScore++;
-            } else {
-                Store.addWrongWord(quizQuestions[quizCurrentIdx]);
-            }
-            quizCurrentIdx++;
-            const lessonsData = LessonsManager.getAllLessons();
-            loadQuizQuestion(lessonsData);
-        }
-
-        function renderCompleteScreen(param, lessonsData) {
-            const score = param ? param.score : 5;
-            const total = param ? param.total : 5;
-            return `
-                <div class="max-w-md mx-auto text-center space-y-6 py-12">
-                    <div class="w-20 h-20 mx-auto rounded-3xl bg-brand-gold/20 flex items-center justify-center text-brand-gold text-4xl font-extrabold shadow-lg">
-                        🎉
-                    </div>
-                    <h1 class="text-3xl font-extrabold">Hoàn thành xuất sắc!</h1>
-                    <p class="text-slate-500">Bạn đã hoàn thành bài học và trả lời đúng <span class="text-brand-red font-bold">${score} / ${total}</span> câu hỏi.</p>
-                    <div class="flex flex-col gap-3 pt-4">
-                        <button onclick="router.navigate('lessons')" class="w-full py-3.5 rounded-xl bg-brand-red hover:bg-red-700 text-white font-bold shadow-lg transition">Tiếp tục học bài khác</button>
-                        <button onclick="router.navigate('home')" class="w-full py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold transition">Về trang chủ</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Khởi chạy ứng dụng lần đầu
-        render();
-    </script>
-</body>
-</html>
+                                    <input type="text" id="newExampleVietnamese" placeholder="VD: Xin hãy mang..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-8
