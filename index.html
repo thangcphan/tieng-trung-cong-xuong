@@ -1,30 +1,305 @@
-<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Pinyin:</label>
-                                  <input type="text" id="newPinyin" required placeholder="VD: zhìjiǎn" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Tiếng Trung Cơ Bản</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#e11d48',
+                            gold: '#f59e0b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="router.navigate('home')">
+                <div class="w-10 h-10 rounded-xl bg-brand-red flex items-center justify-center text-white font-extrabold text-xl shadow-md">中</div>
+                <span class="font-extrabold text-lg tracking-tight">Học Tiếng Trung</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="router.navigate('dashboard')" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold hover:bg-slate-200 transition flex items-center space-x-1.5">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Tiến độ</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main id="mainApp" class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6">
+        <!-- Nội dung sẽ được render động qua JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-400">
+        <p>© 2026 Ứng dụng Học Tiếng Trung. Phát triển phục vụ học tập.</p>
+    </footer>
+
+    <!-- JavaScript Xử lý ứng dụng -->
+    <script>
+        // --- CẤU HÌNH ÂM THANH GIỐNG NGƯỜI THẬT ---
+        function speakText(text) {
+            if (!window.speechSynthesis) {
+                alert('Trình duyệt của bạn không hỗ trợ tính năng phát âm.');
+                return;
+            }
+
+            // Dừng mọi âm thanh đang phát trước đó để tránh bị chồng chéo
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN'; // Đặt ngôn ngữ là tiếng Trung Quốc
+            utterance.rate = 0.85;    // Tốc độ đọc chậm vừa phải, chuẩn xác từng nét
+            utterance.pitch = 1.0;    // Độ cao giọng tự nhiên
+
+            // Lấy danh sách giọng đọc có sẵn trên thiết bị
+            const voices = window.speechSynthesis.getVoices();
+            
+            // Ưu tiên chọn giọng đọc chuẩn Trung Quốc đại lục (zh-CN) chất lượng cao
+            const preferredVoice = voices.find(v => v.lang === 'zh-CN' && (v.name.includes('Natural') || v.name.includes('Enhanced') || v.name.includes('Google') || v.name.includes('Hui') || v.name.includes('Kangkang')));
+            
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            } else {
+                const fallbackVoice = voices.find(v => v.lang.startsWith('zh'));
+                if (fallbackVoice) {
+                    utterance.voice = fallbackVoice;
+                }
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Nạp trước danh sách giọng đọc của trình duyệt
+        if (window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
+        }
+
+        // --- QUẢN LÝ DỮ LIỆU & BÀI HỌC ---
+        const LessonsManager = {
+            getAllLessons: function() {
+                let custom = JSON.parse(localStorage.getItem('custom_lessons') || '[]');
+                if (custom.length === 0) {
+                    custom = [
+                        {
+                            id: 1,
+                            title: "Bài 1: Giao tiếp cơ bản",
+                            desc: "Chào hỏi và làm quen",
+                            words: [
+                                { id: 101, chinese: "你好", pinyin: "nǐ hǎo", vietnamese: "Xin chào", example: "你好，很高兴认识你。", examplePinyin: "Nǐ hǎo, hěn gāoxìng rènshí nǐ.", exampleVietnamese: "Xin chào, rất vui được gặp bạn." },
+                                { id: 102, chinese: "谢谢", pinyin: "xièxie", vietnamese: "Cảm ơn", example: "谢谢你的 帮助。", examplePinyin: "Xièxie nǐ de bāngzhù.", exampleVietnamese: "Cảm ơn sự giúp đỡ của bạn." },
+                                { id: 103, chinese: "再见", pinyin: "zàijiàn", vietnamese: "Tạm biệt", example: "明天见，再见！", examplePinyin: "Míngtiān jiàn, zàijiàn!", exampleVietnamese: "Hẹn gặp lại ngày mai, tạm biệt!" }
+                            ]
+                        }
+                    ];
+                }
+                return custom;
+            },
+            addWordToLesson: function(lessonId, newWord) {
+                let lessons = this.getAllLessons();
+                let lesson = lessons.find(l => l.id == lessonId);
+                if (lesson) {
+                    newWord.id = Date.now();
+                    lesson.words.push(newWord);
+                    localStorage.setItem('custom_lessons', JSON.stringify(lessons));
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        const Store = {
+            getProgress: function() {
+                return JSON.parse(localStorage.getItem('app_progress') || '{"learnedWords":[], "completedLessons":[], "wrongWords":[]}');
+            },
+            markWordLearned: function(wordId) {
+                let prog = this.getProgress();
+                if (!prog.learnedWords.includes(wordId)) {
+                    prog.learnedWords.push(wordId);
+                    localStorage.setItem('app_progress', JSON.stringify(prog));
+                }
+            },
+            markLessonCompleted: function(lessonId) {
+                let prog = this.getProgress();
+                if (!prog.completedLessons.includes(lessonId)) {
+                    prog.completedLessons.push(lessonId);
+                    localStorage.setItem('app_progress', JSON.stringify(prog));
+                }
+            },
+            addWrongWord: function(wordObj) {
+                let prog = this.getProgress();
+                if (!prog.wrongWords.some(w => w.id === wordObj.id)) {
+                    prog.wrongWords.push(wordObj);
+                    localStorage.setItem('app_progress', JSON.stringify(prog));
+                }
+            }
+        };
+
+        // --- ROUTER & ĐIỀU HƯỚNG MÀN HÌNH ---
+        const router = {
+            currentRoute: 'home',
+            param: null,
+            navigate: function(route, param = null) {
+                this.currentRoute = route;
+                this.param = param;
+                render();
+            }
+        };
+
+        function render() {
+            const main = document.getElementById('mainApp');
+            const lessonsData = LessonsManager.getAllLessons();
+
+            if (router.currentRoute === 'home') {
+                main.innerHTML = renderHomeScreen(lessonsData);
+            } else if (router.currentRoute === 'lessons') {
+                main.innerHTML = renderLessonsScreen(lessonsData);
+            } else if (router.currentRoute === 'study') {
+                main.innerHTML = renderStudyScreen(router.param, lessonsData);
+                setTimeout(() => initFlashcardLogic(lessonsData), 50);
+            } else if (router.currentRoute === 'quiz') {
+                main.innerHTML = renderQuizScreen(router.param, lessonsData);
+                setTimeout(() => initQuizLogic(router.param, lessonsData), 50);
+            } else if (router.currentRoute === 'complete') {
+                main.innerHTML = renderCompleteScreen(router.param, lessonsData);
+            } else if (router.currentRoute === 'dashboard') {
+                main.innerHTML = renderDashboard(lessonsData);
+            } else if (router.currentRoute === 'addWord') {
+                main.innerHTML = renderAddWordScreen(lessonsData);
+            }
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        // --- CÁC GIAO DIỆN (TEMPLATES) ---
+        function renderHomeScreen(lessonsData) {
+            return `
+                <div class="space-y-8 py-6">
+                    <div class="text-center space-y-3">
+                        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Học Từ Vựng Tiếng Trung</h1>
+                        <p class="text-slate-500 max-w-lg mx-auto text-sm">Nâng cao khả năng phát âm, ghi nhớ từ vựng thông minh với flashcard và bài kiểm tra trực quan.</p>
+                        <div class="pt-2 flex justify-center gap-3">
+                            <button onclick="router.navigate('lessons')" class="px-6 py-3 rounded-2xl bg-brand-red text-white font-bold text-sm shadow-lg hover:bg-red-700 transition">Bắt đầu học ngay</button>
+                            <button onclick="router.navigate('addWord')" class="px-6 py-3 rounded-2xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">Thêm từ vựng</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div onclick="router.navigate('lessons')" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-red transition space-y-2">
+                            <div class="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-950 text-brand-red flex items-center justify-center font-bold"><i data-lucide="book-open"></i></div>
+                            <h2 class="text-lg font-bold">Danh sách bài học</h2>
+                            <p class="text-xs text-slate-500">Khám phá các chủ đề từ vựng phong phú được biên soạn sẵn.</p>
+                        </div>
+                        <div onclick="router.navigate('dashboard')" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-gold transition space-y-2">
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950 text-brand-gold flex items-center justify-center font-bold"><i data-lucide="trending-up"></i></div>
+                            <h2 class="text-lg font-bold">Thống kê tiến độ</h2>
+                            <p class="text-xs text-slate-500">Theo dõi số lượng từ đã thuộc và tỷ lệ hoàn thành.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLessonsScreen(lessonsData) {
+            return `
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <div class="flex items-center justify-between">
+                        <button onclick="router.navigate('home')" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center space-x-1">
+                            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                            <span>Trang chủ</span>
+                        </button>
+                        <h1 class="text-xl font-extrabold">Danh sách bài học</h1>
+                    </div>
+                    <div class="space-y-3">
+                        ${lessonsData.map(l => `
+                            <div onclick="router.navigate('study', ${l.id})" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-red transition flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-bold text-base">${l.title}</h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">${l.desc} •${l.words.length} từ vựng</p>
+                                </div>
+                                <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800">Học ngay →</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAddWordScreen(lessonsData) {
+            return `
+                <div class="max-w-xl mx-auto space-y-6">
+                    <button onclick="router.navigate('home')" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center space-x-1">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                        <span>Quay lại trang chủ</span>
+                    </button>
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
+                        <h1 class="text-2xl font-extrabold">Thêm từ vựng mới</h1>
+                        <form onsubmit="handleAddNewWord(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chọn bài học:</label>
+                                <select id="newWordLessonId" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
+                                    ${lessonsData.map(l => `<option value="${l.id}">${l.title}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chữ Hán:</label>
+                                    <input type="text" id="newChinese" required placeholder="VD: 质检" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Pinyin:</label>
+                                    <input type="text" id="newPinyin" required placeholder="VD: zhìjiǎn" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nghĩa tiếng Việt:</label>
-                                <input type="text" id="newVietnamese" required placeholder="VD: Kiểm tra chất lượng" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm">
+                                <input type="text" id="newVietnamese" required placeholder="VD: Kiểm tra chất lượng" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Ví dụ (Trung):</label>
-                                    <input type="text" id="newExample" placeholder="VD: 请把产品拿去质检。" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm">
-                                </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Ví dụ (Trung):</label>
+                                <input type="text" id="newExample" placeholder="VD: 请把产品拿去质检。" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Pinyin ví dụ:</label>
-                                  <input type="text" id="newExamplePinyin" placeholder="VD: Qǐng bǎ chǎnpǐn ná qù zhìjiǎn." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm">
+                                    <input type="text" id="newExamplePinyin" placeholder="VD: Qǐng bǎ..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nghĩa ví dụ:</label>
-                                  <input type="text" id="newExampleVietnamese" placeholder="VD: Xin hãy mang sản phẩm đi kiểm tra." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm">
+                                    <input type="text" id="newExampleVietnamese" placeholder="VD: Xin hãy mang..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
                                 </div>
                             </div>
-                            <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-red hover:bg-red-700 text-white font-bold shadow-lg transition">Thêm từ vựng mới</button>
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-red hover:bg-red-700 text-white font-bold shadow-lg transition">Lưu từ vựng</button>
                         </form>
                     </div>
-              </div>
-          `;
+                </div>
+            `;
         }
 
         function handleAddNewWord(e) {
@@ -58,15 +333,15 @@
                     </button>
                     <h1 class="text-2xl font-extrabold">📊 Tiến độ học tập cá nhân</h1>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                             <span class="text-xs font-bold text-slate-400 uppercase">Tổng từ đã học</span>
                             <p class="text-3xl font-extrabold text-brand-red mt-2">${learnedCount} <span class="text-sm text-slate-400 font-normal">/ ${totalWords}</span></p>
                         </div>
-                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                             <span class="text-xs font-bold text-slate-400 uppercase">Bài hoàn thành</span>
                             <p class="text-3xl font-extrabold text-brand-gold mt-2">${prog.completedLessons.length} <span class="text-sm text-slate-400 font-normal">/ ${lessonsData.length}</span></p>
                         </div>
-                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                             <span class="text-xs font-bold text-slate-400 uppercase">Tỷ lệ hoàn thành</span>
                             <p class="text-3xl font-extrabold text-emerald-500 mt-2">${percent}%</p>
                         </div>
@@ -84,7 +359,7 @@
                             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
                             <span>Danh sách bài học</span>
                         </button>
-                        <span class="text-xs font-bold px-3 py-1 rounded-full bg-red-50 dark:bg-red-950 text-brand-red">Bài ${lesson.id} / 30</span>
+                        <span class="text-xs font-bold px-3 py-1 rounded-full bg-red-50 dark:bg-red-950 text-brand-red">Bài ${lesson.id}</span>
                     </div>
                     <div>
                         <h1 class="text-2xl font-extrabold">${lesson.title}</h1>
@@ -92,7 +367,7 @@
                     </div>
 
                     <div id="flashcardContainer" class="perspective-1000 w-full h-96 cursor-pointer" onclick="flipCard()">
-                        <div id="cardInner" class="relative w-full h-full duration-500 transform-style-3d shadow-xl rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                        <div id="cardInner" class="relative w-full h-full duration-500 transform-style-3d shadow-xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                             <!-- MẶT TRƯỚC -->
                             <div class="absolute inset-0 backface-hidden flex flex-col items-center justify-center p-8 text-center space-y-4">
                                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Từ vựng <span id="currentIndexDisplay">1</span> / ${lesson.words.length}</span>
@@ -118,15 +393,15 @@
                                 </div>
                             </div>
                         </div>
-                  </div>
+                    </div>
 
-                  <div class="flex justify-between items-center pt-2">
-                      <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">← Từ trước</button>
-                      <button onclick="router.navigate('quiz', ${lesson.id})" class="px-6 py-2.5 rounded-xl bg-brand-gold hover:bg-amber-600 text-slate-900 font-bold text-sm shadow-md transition">Làm bài kiểm tra →</button>
-                      <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">Từ tiếp →</button>
-                  </div>
-              </div>
-          `;
+                    <div class="flex justify-between items-center pt-2">
+                        <button onclick="prevCard()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">← Từ trước</button>
+                        <button onclick="router.navigate('quiz', ${lesson.id})" class="px-6 py-2.5 rounded-xl bg-brand-gold hover:bg-amber-600 text-slate-900 font-bold text-sm shadow-md transition">Làm bài kiểm tra →</button>
+                        <button onclick="nextCard()" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">Từ tiếp →</button>
+                    </div>
+                </div>
+            `;
         }
 
         let currentCardIndex = 0;
@@ -148,9 +423,9 @@
             document.getElementById('cardChinese').innerText = currentWordObj.chinese;
             document.getElementById('cardPinyin').innerText = currentWordObj.pinyin;
             document.getElementById('cardMeaning').innerText = currentWordObj.vietnamese;
-            document.getElementById('cardExample').innerText = currentWordObj.example;
-            document.getElementById('cardExamplePinyin').innerText = currentWordObj.examplePinyin;
-            document.getElementById('cardExampleVietnamese').innerText = currentWordObj.exampleVietnamese;
+            document.getElementById('cardExample').innerText = currentWordObj.example || '';
+            document.getElementById('cardExamplePinyin').innerText = currentWordObj.examplePinyin || '';
+            document.getElementById('cardExampleVietnamese').innerText = currentWordObj.exampleVietnamese || '';
 
             if (isFlipped) flipCard();
         }
@@ -190,7 +465,7 @@
                         <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
                         <span>Quay lại Flashcard</span>
                     </button>
-                    <div class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl space-y-6">
+                    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold text-brand-red uppercase">Kiểm tra từ vựng</span>
                             <span id="quizProgressCount" class="text-xs font-bold text-slate-400">Câu 1 / 5</span>
@@ -228,14 +503,13 @@
             let currentQ = quizQuestions[quizCurrentIdx];
             document.getElementById('quizQuestionWord').innerText = currentQ.chinese;
 
-            // Tạo đáp án nhiễu
             let allWords = lessonsData.flatMap(l => l.words);
             let distractors = allWords.filter(w => w.id !== currentQ.id).sort(() => 0.5 - Math.random()).slice(0, 3);
             let options = [...distractors, currentQ].sort(() => 0.5 - Math.random());
 
             let container = document.getElementById('quizOptionsContainer');
             container.innerHTML = options.map(opt => `
-                <button onclick="handleQuizAnswer('${opt.vietnamese}', '${currentQ.vietnamese}')" class="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 hover:bg-red-50 dark:hover:bg-red-950 font-semibold text-sm transition text-left border border-slate-200 dark:border-slate-700">
+                <button onclick="handleQuizAnswer('${opt.vietnamese}', '${currentQ.vietnamese}')" class="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-950 font-semibold text-sm transition text-left border border-slate-200 dark:border-slate-700">
                     ${opt.vietnamese}
                 </button>
             `).join('');
@@ -253,7 +527,6 @@
         }
 
         function renderCompleteScreen(param, lessonsData) {
-            const lessonId = param ? param.lessonId : 1;
             const score = param ? param.score : 5;
             const total = param ? param.total : 5;
             return `
@@ -271,37 +544,7 @@
             `;
         }
 
-        function handleGlobalSearch(query) {
-            const resultsContainer = document.getElementById('searchResults');
-            if (!query || query.trim() === '') {
-                resultsContainer.innerHTML = '';
-                return;
-            }
-            const lessonsData = LessonsManager.getAllLessons();
-            let matches = [];
-            lessonsData.forEach(l => {
-                l.words.forEach(w => {
-                    if (w.chinese.includes(query) || w.pinyin.toLowerCase().includes(query.toLowerCase()) || w.vietnamese.toLowerCase().includes(query.toLowerCase())) {
-                        matches.push({ ...w, lessonId: l.id, lessonTitle: l.title });
-                    }
-                });
-            });
-
-            resultsContainer.innerHTML = matches.slice(0, 6).map(m => `
-                <div onclick="router.navigate('study', ${m.lessonId})" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-brand-red transition flex justify-between items-center">
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="font-bold text-brand-red">${m.chinese}</span>
-                            <span class="text-xs text-slate-400">(${m.pinyin})</span>
-                        </div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 font-medium">${m.vietnamese}</p>
-                    </div>
-                    <span class="text-xs font-bold text-slate-400">Bài ${m.lessonId}</span>
-                </div>
-            `).join('') || '<p class="text-xs text-slate-400 text-center col-span-2">Không tìm thấy từ vựng phù hợp.</p>';
-        }
-
-        // Khởi chạy ứng dụng
+        // Khởi chạy ứng dụng lần đầu
         render();
     </script>
 </body>
