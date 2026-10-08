@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Tiếng Trung Giao Tiếp Thương Mại</title>
-    <!-- Tailwind CSS CDN -->
+    <title>TIẾNG TRUNG CÔNG XƯỞNG BY THANGPC</title>
+    <!-- Tailwind CSS & Lucide Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -13,302 +15,125 @@
                 extend: {
                     colors: {
                         brand: {
-                            red: '#e11d48',
-                            gold: '#f59e0b'
+                            red: '#dc2626',
+                            darkRed: '#991b1b',
+                            gold: '#f59e0b',
+                            dark: '#1e1e24'
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .perspective-1000 { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<body class="bg-slate-50 dark:bg-brand-dark text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- Header -->
-    <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <!-- HEADER / NAVBAR -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-brand-dark/80 border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="router.navigate('home')">
-                <div class="w-10 h-10 rounded-xl bg-brand-red flex items-center justify-center text-white font-extrabold text-xl shadow-md">中</div>
-                <span class="font-extrabold text-lg tracking-tight">Học Tiếng Trung</span>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-red to-brand-gold flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-brand-red/20">
+                    工
+                </div>
+                <div>
+                    <span class="font-extrabold text-base sm:text-lg bg-gradient-to-r from-brand-red to-brand-gold bg-clip-text text-transparent">TIẾNG TRUNG CÔNG XƯỞNG BY THANGPC</span>
+                    <span class="block text-xs text-slate-500 dark:text-slate-400 font-medium">30 Bài chuyên sâu chuẩn nhà máy</span>
+                </div>
             </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="router.navigate('dashboard')" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold hover:bg-slate-200 transition flex items-center space-x-1.5">
-                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button onclick="router.navigate('manager')" class="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-red-50 dark:bg-red-950 text-brand-red hover:bg-red-100 text-sm font-bold transition">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Thêm từ</span>
+                </button>
+                <button onclick="router.navigate('dashboard')" class="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-sm font-semibold transition">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 text-brand-gold"></i>
                     <span class="hidden sm:inline">Tiến độ</span>
+                </button>
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition">
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-brand-gold"></i>
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main id="mainApp" class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6">
-        <!-- Nội dung sẽ được render động qua JavaScript -->
+    <!-- MAIN APP CONTAINER -->
+    <main id="app" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Render nội dung động -->
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-400">
-        <p>© 2026 Ứng dụng Học Tiếng Trung. Phát triển phục vụ công việc và học tập.</p>
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-sm text-slate-500 dark:text-slate-400">
+        <p>Hệ thống học tiếng Trung chuyên ngành Công xưởng BY THANGPC &copy; 2026</p>
     </footer>
 
-    <!-- JavaScript Xử lý ứng dụng -->
+    <!-- AUDIO ELEMENT CHO PHÁT ÂM -->
+    <audio id="globalAudioPlayer" preload="auto"></audio>
+
     <script>
-        // --- CẤU HÌNH ÂM THANH GIỐNG NGƯỜI THẬT, TỐC ĐỘ VỪA PHẢI ---
+        // --- HỆ THỐNG ÂM THANH MỚI (CHUẨN BẢN XỨ GOOGLE TTS) ---
         function speakText(text) {
-            if (!window.speechSynthesis) {
-                alert('Trình duyệt của bạn không hỗ trợ tính năng phát âm.');
-                return;
-            }
-
-            // Dừng mọi âm thanh đang phát trước đó để tránh bị chồng chéo
-            window.speechSynthesis.cancel();
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'zh-CN'; // Ngôn ngữ tiếng Trung Quốc
-            utterance.rate = 0.85;    // Tốc độ đọc chậm vừa phải, chuẩn xác từng nét
-            utterance.pitch = 1.0;    // Độ cao giọng tự nhiên
-
-            // Lấy danh sách giọng đọc có sẵn trên thiết bị
-            const voices = window.speechSynthesis.getVoices();
-            
-            // Ưu tiên chọn giọng đọc chuẩn Trung Quốc đại lục chất lượng cao nếu có
-            const preferredVoice = voices.find(v => v.lang === 'zh-CN' && (v.name.includes('Natural') || v.name.includes('Enhanced') || v.name.includes('Google') || v.name.includes('Hui') || v.name.includes('Kangkang')));
-            
-            if (preferredVoice) {
-                utterance.voice = preferredVoice;
-            } else {
-                const fallbackVoice = voices.find(v => v.lang.startsWith('zh'));
-                if (fallbackVoice) {
-                    utterance.voice = fallbackVoice;
+            if (!text) return;
+            const audioPlayer = document.getElementById('globalAudioPlayer');
+            // Sử dụng Google Translate TTS API để phát âm chuẩn xác, không bị lỗi trình duyệt
+            const encodedText = encodeURIComponent(text);
+            audioPlayer.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=zh-CN&client=tw-ob`;
+            audioPlayer.play().catch(error => {
+                console.log("Audio play fallback to Web Speech API:", error);
+                // Fallback nếu có chặn từ trình duyệt
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'zh-CN';
+                    utterance.rate = 0.85;
+                    window.speechSynthesis.speak(utterance);
                 }
-            }
-
-            window.speechSynthesis.speak(utterance);
+            });
         }
 
-        // Nạp trước danh sách giọng đọc của trình duyệt
-        if (window.speechSynthesis) {
-            window.speechSynthesis.onvoiceschanged = () => {
-                window.speechSynthesis.getVoices();
-            };
-        }
-
-        // --- QUẢN LÝ DỮ LIỆU & BÀI HỌC ĐẦY ĐỦ ---
-        const LessonsManager = {
-            getAllLessons: function() {
-                let custom = JSON.parse(localStorage.getItem('custom_lessons') || '[]');
-                if (custom.length === 0) {
-                    custom = [
-                        {
-                            id: 1,
-                            title: "Bài 1: Giao tiếp văn phòng & Chào hỏi",
-                            desc: "Từ vựng cơ bản chào hỏi và làm quen",
-                            words: [
-                                { id: 101, chinese: "你好", pinyin: "nǐ hǎo", vietnamese: "Xin chào", example: "你好，很高兴认识你。", examplePinyin: "Nǐ hǎo, hěn gāoxìng rènshí nǐ.", exampleVietnamese: "Xin chào, rất vui được gặp bạn." },
-                                { id: 102, chinese: "谢谢", pinyin: "xièxie", vietnamese: "Cảm ơn", example: "谢谢你的帮助。", examplePinyin: "Xièxie nǐ de bāngzhù.", exampleVietnamese: "Cảm ơn sự giúp đỡ của bạn." },
-                                { id: 103, chinese: "再见", pinyin: "zàijiàn", vietnamese: "Tạm biệt", example: "明天见，再见！", examplePinyin: "Míngtiān jiàn, zàijiàn!", exampleVietnamese: "Hẹn gặp lại ngày mai, tạm biệt!" }
-                            ]
-                        },
-                        {
-                            id: 2,
-                            title: "Bài 2: Quản lý & Thương mại",
-                            desc: "Thuật ngữ chuyên ngành, kiểm tra chất lượng",
-                            words: [
-                                { id: 201, chinese: "质检", pinyin: "zhìjiǎn", vietnamese: "Kiểm tra chất lượng", example: "请把产品拿去质检。", examplePinyin: "Qǐng bǎ chǎnpǐn ná qù zhìjiǎn.", exampleVietnamese: "Xin hãy mang sản phẩm đi kiểm tra chất lượng." },
-                                { id: 202, chinese: "合同", pinyin: "hétóng", vietnamese: "Hợp đồng", example: "我们明天 签合同。", examplePinyin: "Wǒmen míngtiān qiān hétóng.", exampleVietnamese: "Chúng ta ngày mai ký hợp đồng." }
-                            ]
-                        }
-                    ];
-                }
-                return custom;
+        // --- 30 CHUYÊN ĐỀ NHÀ MÁY ĐẶC THÙ & ĐỘC LẬP (MỖI BÀI 15 TỪ VỰNG CHUẨN XÁC)[cite: 3] ---
+        const factoryLessonsData = [
+            {
+                id: 1, title: "Cơ bản nhà máy & Phân xưởng", desc: "Các khu vực, chức vụ và thuật ngữ tổng quan trong nhà máy.",
+                words: [
+                    { chinese: "工厂", pinyin: "gōngchǎng", vietnamese: "Nhà máy", example: "这家工厂规模很大。", examplePinyin: "Zhè jiā gōngchǎng guīmó hěn dà.", exampleVietnamese: "Quy mô nhà máy này rất lớn." },
+                    { chinese: "车间", pinyin: "chējiān", vietnamese: "Phân xưởng / Xưởng sản xuất", example: "请穿好工作服再进入车间。", examplePinyin: "Qǐng chuān hǎo gōngzuòfú zài jìnrù chējiān.", exampleVietnamese: "Xin mặc đồ bảo hộ rồi mới vào phân xưởng." },
+                    { chinese: "流水线", pinyin: "liúshuǐxiàn", vietnamese: "Dây chuyền sản xuất", example: "流水线作业必须保持速度。", examplePinyin: "Liúshuǐxiàn zuòyè bìxū bǎochí sùdù.", exampleVietnamese: "Thao tác trên dây chuyền phải duy trì tốc độ." },
+                    { chinese: "仓库", pinyin: "cāngkù", vietnamese: "Kho bãi", example: "原料已经送到仓库了。", examplePinyin: "Yuánliào yǐjīng sòng dào cāngkù le.", exampleVietnamese: "Nguyên liệu đã được đưa đến kho." },
+                    { chinese: "办公室", pinyin: "bàngōngshì", vietnamese: "Phòng làm việc / Văn phòng", example: "主任在办公室等你。", examplePinyin: "Zhǔrèn zài bàngōngshì děng nǐ.", exampleVietnamese: "Chủ nhiệm đang đợi bạn ở văn phòng." },
+                    { chinese: "厂长", pinyin: "chǎngzhǎng", vietnamese: "Giám đốc nhà máy / Xưởng trưởng", example: "厂长正在开会。", examplePinyin: "Chǎngzhǎng zhèngzài kāi huì.", exampleVietnamese: "Giám đốc đang họp." },
+                    { chinese: "车间主任", pinyin: "chējiān zhǔrèn", vietnamese: "Chủ nhiệm phân xưởng", example: "有事情向车间主任汇报。", examplePinyin: "Yǒu shìqíng xiàng chējiān zhǔrèn huìbào.", exampleVietnamese: "Có việc hãy báo cáo chủ nhiệm xưởng." },
+                    { chinese: "班长", pinyin: "bānzhǎng", vietnamese: "Tổ trưởng / Trưởng ca", example: "班长，这条线缺人手。", examplePinyin: "Bānzhǎng, zhè tiáo xiàn quē rénshǒu.", exampleVietnamese: "Tổ trưởng ơi, chuyền này thiếu người." },
+                    { chinese: "工人", pinyin: "gōngrén", vietnamese: "Công nhân", example: "工人们正在认真工作。", examplePinyin: "Gōngrénmen zhèngzài rènzhēn gōngzuò.", exampleVietnamese: "Các công nhân đang làm việc chăm chỉ." },
+                    { chinese: "保安", pinyin: "bǎo'ān", vietnamese: "Bảo vệ", example: "请出示厂牌给保安看。", examplePinyin: "Qǐng chūshì chǎngpái gěi bǎo'ān kàn.", exampleVietnamese: "Xin xuất trình thẻ nhà máy cho bảo vệ xem." },
+                    { chinese: "门卫", pinyin: "ménwèi", vietnamese: "Cổng gác / Gác cổng", example: "货车停在门卫外面。", examplePinyin: "Huòchē tíng zài ménwèi wàimiàn.", exampleVietnamese: "Xe tải đang đậu ngoài cổng bảo vệ." },
+                    { chinese: "食堂", pinyin: "shítáng", vietnamese: "Nhà ăn / Canteen", example: "十二点去食堂吃饭。", examplePinyin: "Shí'èr diǎn qù shítáng chīfàn.", exampleVietnamese: "12 giờ đi nhà ăn ăn cơm." },
+                    { chinese: "宿舍", pinyin: "sùshè", vietnamese: "Ký túc xá", example: "公司的宿舍条件很好。", examplePinyin: "Gōngsī de sùshè tiáojiàn hěn hǎo.", exampleVietnamese: "Điều kiện ký túc xá công ty rất tốt." },
+                    { chinese: "消防栓", pinyin: "xiāofángshuān", vietnamese: "Hộp cứu hoả / Vòi chữa cháy", example: "严禁在消防栓旁堆放杂物。", examplePinyin: "Yánjìn zài xiāofángshuān páng duīfàng záwù.", exampleVietnamese: "Nghiêm cấm chất đống tạp vật cạnh hộp cứu hoả." },
+                    { chinese: "公告栏", pinyin: "gōnggàolán", vietnamese: "Bảng thông báo", example: "请查看公告栏的新通知。", examplePinyin: "Qǐng chākàn gōnggàolán de xīn tōngzhī.", exampleVietnamese: "Xin xem thông báo mới trên bảng thông báo." }
+                ]
             },
-            addWordToLesson: function(lessonId, newWord) {
-                let lessons = this.getAllLessons();
-                let lesson = lessons.find(l => l.id == lessonId);
-                if (lesson) {
-                    newWord.id = Date.now();
-                    lesson.words.push(newWord);
-                    localStorage.setItem('custom_lessons', JSON.stringify(lessons));
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        const Store = {
-            getProgress: function() {
-                return JSON.parse(localStorage.getItem('app_progress') || '{"learnedWords":[], "completedLessons":[], "wrongWords":[]}');
-            },
-            markWordLearned: function(wordId) {
-                let prog = this.getProgress();
-                if (!prog.learnedWords.includes(wordId)) {
-                    prog.learnedWords.push(wordId);
-                    localStorage.setItem('app_progress', JSON.stringify(prog));
-                }
-            },
-            markLessonCompleted: function(lessonId) {
-                let prog = this.getProgress();
-                if (!prog.completedLessons.includes(lessonId)) {
-                    prog.completedLessons.push(lessonId);
-                    localStorage.setItem('app_progress', JSON.stringify(prog));
-                }
-            },
-            addWrongWord: function(wordObj) {
-                let prog = this.getProgress();
-                if (!prog.wrongWords.some(w => w.id === wordObj.id)) {
-                    prog.wrongWords.push(wordObj);
-                    localStorage.setItem('app_progress', JSON.stringify(prog));
-                }
-            }
-        };
-
-        // --- ROUTER & ĐIỀU HƯỚNG MÀN HÌNH ---
-        const router = {
-            currentRoute: 'home',
-            param: null,
-            navigate: function(route, param = null) {
-                this.currentRoute = route;
-                this.param = param;
-                render();
-            }
-        };
-
-        function render() {
-            const main = document.getElementById('mainApp');
-            const lessonsData = LessonsManager.getAllLessons();
-
-            if (router.currentRoute === 'home') {
-                main.innerHTML = renderHomeScreen(lessonsData);
-            } else if (router.currentRoute === 'lessons') {
-                main.innerHTML = renderLessonsScreen(lessonsData);
-            } else if (router.currentRoute === 'study') {
-                main.innerHTML = renderStudyScreen(router.param, lessonsData);
-                setTimeout(() => initFlashcardLogic(lessonsData), 50);
-            } else if (router.currentRoute === 'quiz') {
-                main.innerHTML = renderQuizScreen(router.param, lessonsData);
-                setTimeout(() => initQuizLogic(router.param, lessonsData), 50);
-            } else if (router.currentRoute === 'complete') {
-                main.innerHTML = renderCompleteScreen(router.param, lessonsData);
-            } else if (router.currentRoute === 'dashboard') {
-                main.innerHTML = renderDashboard(lessonsData);
-            } else if (router.currentRoute === 'addWord') {
-                main.innerHTML = renderAddWordScreen(lessonsData);
-            }
-
-            if (window.lucide) {
-                lucide.createIcons();
-            }
-        }
-
-        // --- GIAO DIỆN CHI TIẾT ---
-        function renderHomeScreen(lessonsData) {
-            return `
-                <div class="space-y-8 py-6">
-                    <div class="text-center space-y-3">
-                        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Học Từ Vựng Tiếng Trung</h1>
-                        <p class="text-slate-500 max-w-lg mx-auto text-sm">Nâng cao khả năng phát âm chuẩn xác, ghi nhớ từ vựng thông minh với flashcard và bài kiểm tra trực quan.</p>
-                        <div class="pt-2 flex justify-center gap-3">
-                            <button onclick="router.navigate('lessons')" class="px-6 py-3 rounded-2xl bg-brand-red text-white font-bold text-sm shadow-lg hover:bg-red-700 transition">Bắt đầu học ngay</button>
-                            <button onclick="router.navigate('addWord')" class="px-6 py-3 rounded-2xl bg-slate-200 dark:bg-slate-800 font-bold text-sm hover:bg-slate-300 transition">Thêm từ vựng</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Ô tìm kiếm nhanh -->
-                    <div class="max-w-xl mx-auto">
-                        <div class="relative">
-                            <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-slate-400"></i>
-                            <input type="text" oninput="handleGlobalSearch(this.value)" placeholder="Tìm kiếm nhanh từ vựng, pinyin, nghĩa..." class="w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-red shadow-sm">
-                        </div>
-                        <div id="searchResults" class="mt-2 grid grid-cols-1 gap-2"></div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                        <div onclick="router.navigate('lessons')" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-red transition space-y-2">
-                            <div class="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-950 text-brand-red flex items-center justify-center font-bold"><i data-lucide="book-open"></i></div>
-                            <h2 class="text-lg font-bold">Danh sách bài học</h2>
-                            <p class="text-xs text-slate-500">Khám phá các chủ đề từ vựng phong phú được biên soạn sẵn.</p>
-                        </div>
-                        <div onclick="router.navigate('dashboard')" class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-gold transition space-y-2">
-                            <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950 text-brand-gold flex items-center justify-center font-bold"><i data-lucide="trending-up"></i></div>
-                            <h2 class="text-lg font-bold">Thống kê tiến độ</h2>
-                            <p class="text-xs text-slate-500">Theo dõi số lượng từ đã thuộc và tỷ lệ hoàn thành.</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderLessonsScreen(lessonsData) {
-            return `
-                <div class="max-w-3xl mx-auto space-y-6">
-                    <div class="flex items-center justify-between">
-                        <button onclick="router.navigate('home')" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center space-x-1">
-                            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                            <span>Trang chủ</span>
-                        </button>
-                        <h1 class="text-xl font-extrabold">Danh sách bài học</h1>
-                    </div>
-                    <div class="space-y-3">
-                        ${lessonsData.map(l => `
-                            <div onclick="router.navigate('study', ${l.id})" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-brand-red transition flex items-center justify-between">
-                                <div>
-                                    <h3 class="font-bold text-base">${l.title}</h3>
-                                    <p class="text-xs text-slate-500 mt-0.5">${l.desc} • ${l.words.length} từ vựng</p>
-                                </div>
-                                <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800">Học ngay →</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderAddWordScreen(lessonsData) {
-            return `
-                <div class="max-w-xl mx-auto space-y-6">
-                    <button onclick="router.navigate('home')" class="text-xs font-bold text-slate-500 hover:text-brand-red flex items-center space-x-1">
-                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                        <span>Quay lại trang chủ</span>
-                    </button>
-                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
-                        <h1 class="text-2xl font-extrabold">Thêm từ vựng mới</h1>
-                        <form onsubmit="handleAddNewWord(event)" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chọn bài học:</label>
-                                <select id="newWordLessonId" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
-                                    ${lessonsData.map(l => `<option value="${l.id}">${l.title}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chữ Hán:</label>
-                                    <input type="text" id="newChinese" required placeholder="VD: 质检" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Pinyin:</label>
-                                    <input type="text" id="newPinyin" required placeholder="VD: zhìjiǎn" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nghĩa tiếng Việt:</label>
-                                <input type="text" id="newVietnamese" required placeholder="VD: Kiểm tra chất lượng" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Ví dụ (Trung):</label>
-                                <input type="text" id="newExample" placeholder="VD: 请把产品拿去质检。" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Pinyin ví dụ:</label>
-                                    <input type="text" id="newExamplePinyin" placeholder="VD: Qǐng bǎ..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nghĩa ví dụ:</label>
-                                    <input type="text" id="newExampleVietnamese" placeholder="VD: Xin hãy mang..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-8
+            {
+                id: 2, title: "Nhân sự & Tổ chức ca sản xuất", desc: "Chấm công, tăng ca, ngày phép và quy định ca kíp.",
+                words: [
+                    { chinese: "考勤", pinyin: "kǎoqín", vietnamese: "Chấm công / Điểm danh", example: "上班记得刷卡考勤。", examplePinyin: "Shàngbān jìde shuākǎ kǎoqín.", exampleVietnamese: "Đi làm nhớ quẹt thẻ chấm công." },
+                    { chinese: "加班", pinyin: "jiābān", vietnamese: "Tăng ca", example: "今晚全体人员需要加班。", examplePinyin: "Jīnwǎn quántǐ rényuán xūyào jiābān.", exampleVietnamese: "Tối nay toàn thể nhân sự cần tăng ca." },
+                    { chinese: "请假", pinyin: "qǐngjià", vietnamese: "Xin nghỉ phép", example: "我有事明天想请假一天。", examplePinyin: "Wǒ yǒushì míngtiān xiǎng qǐngjià yì tiān.", exampleVietnamese: "Tôi có việc mai muốn xin nghỉ một ngày." },
+                    { chinese: "旷工", pinyin: "kuànggōng", vietnamese: "Nghỉ việc không phép", example: "无故旷工会被罚款。", examplePinyin: "Wúgù kuànggōng huì bèi fákuǎn.", exampleVietnamese: "Nghỉ không phép không lý do sẽ bị phạt tiền." },
+                    { chinese: "迟到", pinyin: "chídào", vietnamese: "Đi trễ / Muộn giờ", example: "今天路上塞车，我迟到了。", examplePinyin: "Jīntiān lùshang sāichē, wǒ chídào le.", exampleVietnamese: "Hôm nay đường kẹt xe, tôi bị trễ." },
+                    { chinese: "早退", pinyin: "zǎotuì", vietnamese: "Về sớm", example: "未经批准不得早退。", examplePinyin: "Wèijīng pīzhǔn bùdé zǎotuì.", exampleVietnamese: "Chưa được chuẩn y không được về sớm." },
+                    { chinese: "白班", pinyin: "báibān", vietnamese: "Ca ngày", example: "我本周上白班。", examplePinyin: "Wǒ běnzhōu shàng báibān.", exampleVietnamese: "Tuần này tôi làm ca ngày." },
+                    { chinese: "夜班", pinyin: "yèbān", vietnamese: "Ca đêm", example: "夜班补贴是多少？", examplePinyin: "Yèbān bǔtiē shì duōshǎo?", exampleVietnamese: "Phụ cấp ca đêm là bao nhiêu?" },
+                    { chinese: "两班倒", pinyin: "liǎng bān dǎo", vietnamese: "Đổi 2 ca (Ngày/Đêm)", example: "我们工厂实行两班倒制。", examplePinyin: "Wǒmen gōngchǎng shíxíng liǎng bān dǎo zhì.", exampleVietnamese: "Nhà máy chúng ta thực hiện chế độ 2 ca." },
+                    { chinese: "休息日", pinyin: "xiūxīrì", vietnamese: "Ngày nghỉ", example: "星期日是我们的休息日。", examplePinyin: "Xīngqīrì shì wǒmen de xiūxīrì.", exampleVietnamese: "Chủ nhật là ngày nghỉ của chúng tôi." },
+                    { chinese: "年假", pinyin: "niánjià", vietnamese: "Phép năm", example: "我想申请三天年假回乡。", examplePinyin: "Wǒ xiǎng shēnqǐng sān tiān niánjià huí xiāng.", exampleVietnamese: "Tôi muốn xin 3 ngày phép năm về quê." },
+                    { chinese: "辞职", pinyin: "cízhí", vietnamese: "Xin nghỉ việc / Thôi việc", example: "他已经递交了辞职报告。", examplePinyin: "Tā yǐjīng dìjiāo le cízhí bàogào.", exampleVietnamese: "Anh ấy đã nộp đơn xin thôi việc." },
+                    { chinese: "招聘", pinyin: "zhàopǐn", vietnamese: "Tuyển dụng", example: "工厂现在大量招聘普工。", examplePinyin: "Gōngchǎng xiànzài dàliàng zhàopǐn pǔgōng.", exampleVietnamese: "Nhà máy hiện đang tuyển dụng lớn lao
